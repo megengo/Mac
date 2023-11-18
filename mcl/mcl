@@ -109,3 +109,9 @@ mclFailChk(){
 #-- Is Number --#
 # Returns true if the argument is a whole number
 mclIsNum(){ grep -E '^[0-9]{1,}$' <<< "$1" &> /dev/null; }
+
+mclConsoleUserName(){ scutil <<< "show State:/User/ConsoleUser" | awk -F 'Name : ' '/Name :/ && ! /loginwindow/ { print $2 }'; }
+mclConsoleUserUID(){ scutil <<< "show State:/User/ConsoleUser" | awk -F 'UID : ' '/UID :/ && ! /loginwindow/ { print $2 }'; }
+mclPMPresentActive(){ pmset -g useractivity | grep "Level = '.*PresentActive" &> /dev/null; }
+mclConvertDateTimeToEpoch(){ date -jf "%Y%m%d %H%M%S" "$1" +"%s"; }
+mclConvertEpochToDateTime(){ date -jf "%s" "$1" +"%Y%m%d %H%M%S"; }
