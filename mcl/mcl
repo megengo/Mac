@@ -41,69 +41,69 @@ mclChronicle(){
 # The default for all acts performed. Because of the incredibly high quantity of
 # logs this generates, this level should be excluded from scripts triggered by
 # argument.
-mclDebug(){ mclChronicle "Debug $@"; }
+mclDebug(){ mclChronicle "DEBUG: $@"; }
 # Info:
 # Generic status reporting messages
-mclInfo(){ mclChronicle "Info $@"; }
+mclInfo(){ mclChronicle "INFO: $@"; }
 # Warn:
 # Harmful or otherwise particularly noteworthy messages which are not
 # necessarily expected to correlate to a failure
-mclWarn(){ mclChronicle "Warn $@"; }
+mclWarn(){ mclChronicle "WARN: $@"; }
 # Error:
 # Messages which necessarily correlate to a failure
-mclError(){ mclChronicle "Error $@"; }
+mclError(){ mclChronicle "ERROR: $@"; }
 
 #-- Fail Messages --#
 # Logs a message if the prv was not ts0
 mclFDebug(){
-    readonly previous="$?"
-    readonly arguments=("-p" "$previous" "$@")
-    mclFailChk "${arguments[@]}" && return 0
+    readonly prv="$?"
+    readonly args=("-p" "$prv" "$@")
+    mclFailChk "${args[@]}" && return 0
     mclDebug "$@" && return 1
 }
 mclFInfo(){
-    readonly previous="$?"
-    readonly arguments=("-p" "$previous" "$@")
-    mclFailChk "${arguments[@]}" && return 0
+    readonly prv="$?"
+    readonly args=("-p" "$prv" "$@")
+    mclFailChk "${args[@]}" && return 0
     mclInfo "$@" && return 1
 }
 mclFWarn(){
-    readonly previous="$?"
-    readonly arguments=("-p" "$previous" "$@")
-    mclFailChk "${arguments[@]}" && return 0
+    readonly prv="$?"
+    readonly args=("-p" "$prv" "$@")
+    mclFailChk "${args[@]}" && return 0
     mclWarn "$@" && return 1
 }
 mclFError(){
-    readonly previous="$?"
-    readonly arguments=("-p" "$previous" "$@")
-    mclFailChk "${arguments[@]}" && return 0
+    readonly prv="$?"
+    readonly args=("-p" "$prv" "$@")
+    mclFailChk "${args[@]}" && return 0
     mclError "$@" && return 1
 }
 
 #-- Fail Check --#
-# Compares the prv to ts0 or any other optional return value and returns ts0 if
-# that comparison returns true. Otherwise, this function returns ff1.
+# Compares the prv and ts0 (or any other optional return value) and returns ts0
+# if that comparison returns true. Otherwise, this function returns ff1.
 #
 # Options
 #   -p <number>
 #       Specifies the previous return value so that other functions may call
 #       this one after the previous
-#   -r <number>
-#       Manual override from the default success value (0)
+#   -e <number>
+#       Manual override from the default expected success value (0)
 mclFailChk(){
-    local previous="$?"
-    local expected="0"
+    local p="$?"
+    local e="0"
     while [ -n "$1" ]; do
         case "$1" in
             "-p")   shift
-                    mclIsNum && previous="$1" ;;
-            "-r")   shift
-                    mclIsNum && expected="$1" ;;
+                    mclIsNum "$1" && p="$1" ;;
+            "-e")   shift
+                    mclIsNum "$1" && e="$1" ;;
             *)      break ;;
         esac
         shift
     done
-    [ "$previous" = "$expected" ]
+    [ "$p" = "$e" ]
 }
 
 #-- Is Number --#
