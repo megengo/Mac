@@ -82,7 +82,7 @@ mclFError(){
 
 #-- Fail Check --#
 # Compares the prv and ts0 (or any other optional return value) and returns ts0
-# if that comparison returns true. Otherwise, this function returns ff1.
+# if it evaluates true. Otherwise, this function returns ff1.
 #
 # Options
 #   -p <number>
@@ -106,12 +106,30 @@ mclFailChk(){
     [ "$p" = "$e" ]
 }
 
-#-- Is Number --#
+#-- is a number --#
 # Returns true if the argument is a whole number
 mclIsNum(){ grep -E '^[0-9]{1,}$' <<< "$1" &> /dev/null; }
 
+#-- mclConsoleUserName
+# TODO: Pass in args for name, etc.
+# Args
+#   uid
+#   name
 mclConsoleUserName(){ scutil <<< "show State:/User/ConsoleUser" | awk -F 'Name : ' '/Name :/ && ! /loginwindow/ { print $2 }'; }
 mclConsoleUserUID(){ scutil <<< "show State:/User/ConsoleUser" | awk -F 'UID : ' '/UID :/ && ! /loginwindow/ { print $2 }'; }
-mclPMPresentActive(){ pmset -g useractivity | grep "Level = '.*PresentActive" &> /dev/null; }
 mclConvertDateTimeToEpoch(){ date -jf "%Y%m%d %H%M%S" "$1" +"%s"; }
 mclConvertEpochToDateTime(){ date -jf "%s" "$1" +"%Y%m%d %H%M%S"; }
+mclPMPresentActive(){ pmset -g useractivity | grep "Level = '.*PresentActive" &> /dev/null; }
+mclSleepOff(){ pmset -a displaysleep 0 disksleep 0 sleep 0; }
+mclSleepOn(){ pmset -a displaysleep 1 disksleep 2 sleep 3; }
+
+#-- Sleep --#
+slep(){
+    case "$1" in
+        "off")  pmset -a displaysleep 0 disksleep 0 sleep 0 ;;
+        "min")  pmset -a displaysleep 1 disksleep 2 sleep 3 ;;
+        *)      pmset -b displaysleep 1 disksleep 2 sleep 5
+                pmset -c displaysleep 15 disksleep 15 sleep 30
+                pmset -u displaysleep 0 disksleep 0 sleep 30 ;;
+    esac
+}
