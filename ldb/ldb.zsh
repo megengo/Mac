@@ -5,39 +5,27 @@ readonly "$PB"="/usr/libexec/PlistBuddy"
 
 ldbUnload(){
   [ -n "$1" ] && readonly plist="$1" || return 1
-  if [ -f "$plist" ]; then
-    launchctl bootout system "$PLIST" && return 0 || return 1
-  else
-    return 1
-  fi
+  [ -f "$plist" ] || return 1
+  launchctl bootout system "$plist"
 }
 
 
 ldbLoad(){
   [ -n "$1" ] && readonly plist="$1" || return 1
-  if [ -f "$plist" ]; then
-    launchctl bootstrap system "$plist" && return 0 || return 1
-  else
-    return 1
-  fi
+  [ -f "$plist" ] || return 1
+  launchctl bootstrap system "$plist"
 }
 
 ldbWrite(){
   [ -n "$1" ] && readonly plist="$1" || return 1
-  if [ -f "$plist" ]; then
-    defaults write "$plist" "$key" "$value" && return 0 || return 1
-  else
-    return 1
-  fi
+  [ -f "$plist" ] || return 1
+  defaults write "$plist" "$key" "$value"
 }
 
 ldpDelete(){
   [ -n "$1" ] && readonly plist="$1" || return 1
-  if [ -f "$plist" ]; then
-    defaults delete "$plist" "$key" && return 0 || return 1
-  else
-    return 1
-  fi
+  [ -f "$plist" ] || return 1
+  defaults delete "$plist" "$key" && return 0 || return 1
 }
 
 ldbMakeArray(){

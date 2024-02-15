@@ -19,42 +19,16 @@ readonly MCL_VERSION="0.0.0"
 #-- Functions --#
 #---------------#
 
-#-- Chronicle --#
-# Outputs all arguments prepended with a date time string. Chronicle messages
-# have 3 fields, i.e. date, time, level.
-#
-# Date format: 8-digit date, 6 digit time
-# date is 4 digit year, 2 digit month, 2 digit day
-# time is 2 digit hour, 2 digit minute, 2 digit second
-#
-# Call the log level functions defined below instead of chronicle directly
 mclChronicle(){
     readonly log="$(date '+%Y%m%d %H%M%S') $@"
     [ -n "$MCL_LOG" ] && tee -a "$MCL_LOG" <<< "$log" || echo "$log"
 }
 
-#-- Chronicle Log Levels --#
-# Prepends a string representing one of four log levels to a chronicle message.
-# These functions should be called directly instead of chronicle.
-#
-# Debug:
-# The default for all acts performed. Because of the incredibly high quantity of
-# logs this generates, this level should be excluded from scripts triggered by
-# argument.
 mclDebug(){ mclChronicle "DEBUG: $@"; }
-# Info:
-# Generic status reporting messages
 mclInfo(){ mclChronicle "INFO: $@"; }
-# Warn:
-# Harmful or otherwise particularly noteworthy messages which are not
-# necessarily expected to correlate to a failure
 mclWarn(){ mclChronicle "WARN: $@"; }
-# Error:
-# Messages which necessarily correlate to a failure
 mclError(){ mclChronicle "ERROR: $@"; }
 
-#-- Fail Messages --#
-# Logs a message if the prv was not ts0
 mclFDebug(){
     readonly prv="$?"
     readonly args=("-p" "$prv" "$@")
@@ -80,16 +54,6 @@ mclFError(){
     mclError "$@" && return 1
 }
 
-#-- Fail Check --#
-# Compares the prv and ts0 (or any other optional return value) and returns ts0
-# if it evaluates true. Otherwise, this function returns ff1.
-#
-# Options
-#   -p <number>
-#       Specifies the previous return value so that other functions may call
-#       this one after the previous
-#   -e <number>
-#       Manual override from the default expected success value (0)
 mclFailChk(){
     local p="$?"
     local e="0"
@@ -106,8 +70,6 @@ mclFailChk(){
     [ "$p" = "$e" ]
 }
 
-#-- is a number --#
-# Returns true if the argument is a whole number
 mclIsNum(){ grep -E '^[0-9]{1,}$' <<< "$1" &> /dev/null; }
 
 #-- mclConsoleUserName
