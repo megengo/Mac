@@ -1,3 +1,55 @@
 #!/bin/zsh
-# Swift Dialog Library
-# This library contains several functions for use with swiftDialog
+# Swift Dialog Shell Script Library
+
+main() {
+  #dialogTest1
+  #dialogTest2
+  #dialogTest3
+  alertTest1
+
+  exit 0
+}
+
+dialogTest1() {
+  dialog \
+    -t "Style: Mini" \
+    -m "Alignment has no bearing on mini style" \
+    --style mini \
+    --messagealignment right \
+    --messageposition left
+}
+
+dialogTest2() {
+  dialog \
+    -t "Style: Centered" \
+    -m "Position has no bearing on centered style" \
+    --style centered \
+    --messagealignment center \
+    --messageposition center
+}
+
+dialogTest3() {
+  dialog \
+    -t "Style: Right" \
+    -m "Alignment & Position: Right" \
+    --style right \
+    --messagealignment right
+}
+
+alertTest1() {
+  dialog \
+    -t "Style: Alert" \
+    -m "Message goes here" \
+    --style right \
+    --messagealignment right \
+    --messageposition right
+}
+cautionTest1() {
+
+}
+
+warningTest1() {
+
+}
+
+[ "$ZSH_EVAL_CONTEXT" = "toplevel" ] && main
