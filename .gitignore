@@ -31,3 +31,6 @@ Temporary Items
 *.dmg
 *.zip
 *.tar
+
+# Swift dev files
+.xcuserstate
