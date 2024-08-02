@@ -32,5 +32,32 @@ Temporary Items
 *.zip
 *.tar
 
-# Swift dev files
+# Xcode
 *.xcuserstate
+*.xcworkspace
+xcuserdata/
+DerivedData/
+.idea/
+
+# Swift Package Manager
+.build/
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+
+# Bundle artifact
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Xcode-specific
+*.xcuserdatad
+*.xcscmblueprint
