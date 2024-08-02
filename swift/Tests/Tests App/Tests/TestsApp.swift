@@ -1,9 +1,7 @@
-//
 //  TestsApp.swift
 //  Tests
 //
-//  Created by Chris Cox on 8/1/24.
-//
+//  Created on 8/1/24
 
 import SwiftUI
 import SwiftData
