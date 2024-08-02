@@ -33,4 +33,4 @@ Temporary Items
 *.tar
 
 # Swift dev files
-swift/Tests/Tests App/Tests.xcodeproj/project.xcworkspace/xcuserdata/megengo.xcuserdatad/UserInterfaceState.xcuserstate
+*.xcuserstate
